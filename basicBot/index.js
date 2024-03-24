@@ -1,24 +1,45 @@
 const { Client, Events, GatewayIntentBits, SlashCommandBuilder } = require('discord.js');
 const { token } = require('./config.json');
+const comebackMechanicsGuildId = '1070482190833561713';
 
-const client = new Client({ intents: [] });
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages] });
 
 client.once(Events.ClientReady, (c) => {
 	console.log(`Logged in as ${c.user.tag}`);
 
-	const ping = new SlashCommandBuilder().setName('ping').setDescription('Replies with Pong!');
+	const glc = new SlashCommandBuilder().setName('glc').setDescription('Gym Leader Challenge Info');
 	//? this was to make it only show up in a specific guild
-	client.application.commands.create(ping, '1070482190833561713');
+	client.application.commands.create(glc, comebackMechanicsGuildId);
 });
+
+//TODO this gets a response that a message was typed but the content is empty
+// const prefix = '!';
+// client.on('messageCreate', (message) => {
+// 	// console.log('message: ', message);
+// 	console.log('message.content: ', message.content);
+// 	//? Only human messages are allowed if they have the prefix
+// 	if (!message.content.startsWith(prefix) || message.author.bot) return;
+
+// 	if (message.content.startsWith(`${prefix}ping`)) {
+// 		message.channel.send('pong! http://tcgplayer.com');
+// 	} else if (message.content.startsWith(`${prefix}foo`)) {
+// 		message.channel.send('bar!');
+// 	}
+// });
 
 client.on(Events.InteractionCreate, (interaction) => {
 	if (!interaction.isChatInputCommand()) return;
-	console.log(interaction.member.nickname);
+	// console.log(interaction.member.nickname);
 
 	switch (interaction.commandName) {
-		case 'ping':
-			console.log('PONG');
-			interaction.reply('PONG! http://tcgplayer.com');
+		case 'glc':
+			interaction.reply(`
+			Check the Tags Leaderboard
+https://brave-shark-9g6q3j-dev-ed.my.site.com/comebackmechanics/
+
+Looking to learn about GLC?
+https://gymleaderchallenge.com/
+			`);
 			break;
 		default:
 			break;
@@ -26,6 +47,14 @@ client.on(Events.InteractionCreate, (interaction) => {
 });
 
 client.login(token);
+
+/* 
+Check the Tags Leaderboard
+https://brave-shark-9g6q3j-dev-ed.my.site.com/comebackmechanics/ 
+
+Looking to learn about GLC?
+https://gymleaderchallenge.com/
+*/
 
 /*
 ChatInputCommandInteraction {
