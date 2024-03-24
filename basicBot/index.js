@@ -25,12 +25,6 @@ for (const folder of commandFolders) {
 
 client.once(Events.ClientReady, (c) => {
 	console.log(`Ready! Logged in as ${c.user.tag}`);
-
-	// const glc = new SlashCommandBuilder().setName('glc').setDescription('Gym Leader Challenge Info');
-	// client.application.commands.create(glc, guildId);
-
-	// const deck = new SlashCommandBuilder().setName('deck').setDescription('Get play.limitless');
-	// client.application.commands.create(deck, guildId);
 });
 
 //TODO this gets a response that a message was typed but the content is empty
@@ -71,27 +65,9 @@ client.on(Events.InteractionCreate, async (interaction) => {
 			await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
 		}
 	}
-	// switch (interaction.commandName) {
-	// 	case 'glc':
-	// 		interaction.reply({
-	// 			content: 'glccccccc',
-	// 			ephemeral: true, //? this will make the message only visible to the executor
-	// 		});
-	// 		break;
-	// 	default:
-	// 		break;
-	// }
 });
 
 client.login(token);
-
-/* 
-Check the Tags Leaderboard
-https://brave-shark-9g6q3j-dev-ed.my.site.com/comebackmechanics/ 
-
-Looking to learn about GLC?
-https://gymleaderchallenge.com/
-*/
 
 /*
 ChatInputCommandInteraction {
