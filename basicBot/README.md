@@ -19,6 +19,7 @@ Getting the bot online:
 -   [Application - Discord Developer](https://discord.com/developers/applications/1221441316026585088/bot)
 -   [Discord JS Bot Guide (GitHub)](https://github.com/AnIdiotsGuide/discordjs-bot-guide/blob/master/first-bot/your-first-bot.md)
 -   [Deleting an old command](https://discordjs.guide/slash-commands/deleting-commands.html#deleting-specific-commands)
+-   [Slash Command Documentation](https://discordjs.guide/slash-commands/response-methods.html#ephemeral-responses)
 
 YouTube Videos
 

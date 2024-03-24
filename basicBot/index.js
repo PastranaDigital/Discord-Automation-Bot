@@ -1,6 +1,5 @@
-const { Client, Events, GatewayIntentBits, SlashCommandBuilder } = require('discord.js');
-const { token } = require('./config.json');
-const comebackMechanicsGuildId = '1070482190833561713';
+const { Client, Events, GatewayIntentBits, SlashCommandBuilder, REST, Routes } = require('discord.js');
+const { clientId, guildId, token } = require('./config.json');
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages] });
 
@@ -9,7 +8,7 @@ client.once(Events.ClientReady, (c) => {
 
 	const glc = new SlashCommandBuilder().setName('glc').setDescription('Gym Leader Challenge Info');
 	//? this was to make it only show up in a specific guild
-	client.application.commands.create(glc, comebackMechanicsGuildId);
+	client.application.commands.create(glc, guildId);
 });
 
 //TODO this gets a response that a message was typed but the content is empty
@@ -33,13 +32,16 @@ client.on(Events.InteractionCreate, (interaction) => {
 
 	switch (interaction.commandName) {
 		case 'glc':
-			interaction.reply(`
+			interaction.reply({
+				content: `
 			Check the Tags Leaderboard
 https://brave-shark-9g6q3j-dev-ed.my.site.com/comebackmechanics/
 
 Looking to learn about GLC?
 https://gymleaderchallenge.com/
-			`);
+			`,
+				ephemeral: true, //? this will make the message only visible to the executor
+			});
 			break;
 		default:
 			break;
