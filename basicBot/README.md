@@ -17,7 +17,8 @@ Getting the bot online:
 ## Resources
 
 -   [Application - Discord Developer](https://discord.com/developers/applications/1221441316026585088/bot)
--   [Discord JS Bot Guide (GitHub)](https://github.com/AnIdiotsGuide/discordjs-bot-guide/blob/master/first-bot/your-first-bot.md)
+-   [Official Discord Js GitHub](https://github.com/discordjs/guide/blob/main/code-samples/creating-your-bot/command-deployment/deploy-commands.js)
+-   [Unofficial Discord JS Bot Guide (GitHub)](https://github.com/AnIdiotsGuide/discordjs-bot-guide/blob/master/first-bot/your-first-bot.md)
 -   [Deleting an old command](https://discordjs.guide/slash-commands/deleting-commands.html#deleting-specific-commands)
 -   [Slash Command Documentation](https://discordjs.guide/slash-commands/response-methods.html#ephemeral-responses)
 
@@ -25,3 +26,4 @@ YouTube Videos
 
 -   [Code Your Own Discord Bot - Basics (2024)](https://www.youtube.com/watch?v=Q0JlD7gCZRs)
 -   [Code Your Own Discord Bot | Basic Slash Command Handler](https://www.youtube.com/watch?v=dApRecz4BDc)
+-   [Google Images Scraper](https://www.youtube.com/watch?v=GYUc46XPlEI)

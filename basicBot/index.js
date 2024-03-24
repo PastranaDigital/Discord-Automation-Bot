@@ -1,14 +1,36 @@
-const { Client, Events, GatewayIntentBits, SlashCommandBuilder, REST, Routes } = require('discord.js');
+const fs = require('node:fs');
+const path = require('node:path');
+const { Client, Collection, Events, GatewayIntentBits, SlashCommandBuilder, REST, Routes } = require('discord.js');
 const { clientId, guildId, token } = require('./config.json');
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages] });
 
-client.once(Events.ClientReady, (c) => {
-	console.log(`Logged in as ${c.user.tag}`);
+client.commands = new Collection();
+const foldersPath = path.join(__dirname, 'commands');
+const commandFolders = fs.readdirSync(foldersPath);
 
-	const glc = new SlashCommandBuilder().setName('glc').setDescription('Gym Leader Challenge Info');
-	//? this was to make it only show up in a specific guild
-	client.application.commands.create(glc, guildId);
+for (const folder of commandFolders) {
+	const commandsPath = path.join(foldersPath, folder);
+	const commandFiles = fs.readdirSync(commandsPath).filter((file) => file.endsWith('.js'));
+	for (const file of commandFiles) {
+		const filePath = path.join(commandsPath, file);
+		const command = require(filePath);
+		if ('data' in command && 'execute' in command) {
+			client.commands.set(command.data.name, command);
+		} else {
+			console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
+		}
+	}
+}
+
+client.once(Events.ClientReady, (c) => {
+	console.log(`Ready! Logged in as ${c.user.tag}`);
+
+	// const glc = new SlashCommandBuilder().setName('glc').setDescription('Gym Leader Challenge Info');
+	// client.application.commands.create(glc, guildId);
+
+	// const deck = new SlashCommandBuilder().setName('deck').setDescription('Get play.limitless');
+	// client.application.commands.create(deck, guildId);
 });
 
 //TODO this gets a response that a message was typed but the content is empty
@@ -26,26 +48,39 @@ client.once(Events.ClientReady, (c) => {
 // 	}
 // });
 
-client.on(Events.InteractionCreate, (interaction) => {
-	if (!interaction.isChatInputCommand()) return;
+client.on(Events.InteractionCreate, async (interaction) => {
 	// console.log(interaction.member.nickname);
-
-	switch (interaction.commandName) {
-		case 'glc':
-			interaction.reply({
-				content: `
-			Check the Tags Leaderboard
-https://brave-shark-9g6q3j-dev-ed.my.site.com/comebackmechanics/
-
-Looking to learn about GLC?
-https://gymleaderchallenge.com/
-			`,
-				ephemeral: true, //? this will make the message only visible to the executor
-			});
-			break;
-		default:
-			break;
+	if (!interaction.isChatInputCommand()) return;
+	//? error handling
+	const command = interaction.client.commands.get(interaction.commandName);
+	if (!command) {
+		console.error(`No command matching ${interaction.commandName} was found.`);
+		return;
 	}
+
+	try {
+		await command.execute(interaction);
+	} catch (error) {
+		console.error(error);
+		if (interaction.replied || interaction.deferred) {
+			await interaction.followUp({
+				content: 'There was an error while executing this command!',
+				ephemeral: true,
+			});
+		} else {
+			await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+		}
+	}
+	// switch (interaction.commandName) {
+	// 	case 'glc':
+	// 		interaction.reply({
+	// 			content: 'glccccccc',
+	// 			ephemeral: true, //? this will make the message only visible to the executor
+	// 		});
+	// 		break;
+	// 	default:
+	// 		break;
+	// }
 });
 
 client.login(token);

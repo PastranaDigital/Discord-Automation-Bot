@@ -1,3 +1,6 @@
+//? Run via
+// node delete-commands.js
+
 const { REST, Routes } = require('discord.js');
 const { clientId, guildId, token } = require('./config.json');
 
