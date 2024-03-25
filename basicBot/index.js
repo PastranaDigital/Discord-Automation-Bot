@@ -43,7 +43,9 @@ client.once(Events.ClientReady, (c) => {
 // });
 
 client.on(Events.InteractionCreate, async (interaction) => {
-	// console.log(interaction.member.nickname);
+	console.log('---------------------------');
+	console.log('Command activated by: ', interaction.member.nickname);
+	// console.log('Command activated');
 	if (!interaction.isChatInputCommand()) return;
 	//? error handling
 	const command = interaction.client.commands.get(interaction.commandName);
@@ -65,6 +67,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
 			await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
 		}
 	}
+	console.log('---------------------------');
 });
 
 client.login(token);

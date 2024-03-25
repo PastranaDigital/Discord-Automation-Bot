@@ -40,12 +40,12 @@ module.exports = {
 		//? since the reply is taking longer than 3 seconds
 		await interaction.deferReply({ ephemeral: true });
 
-		console.log('interaction: ', interaction);
+		// console.log('interaction: ', interaction);
 
 		const archetype = interaction.options.getString('archetype');
 		let url = `${baseUrl}${archetype}${endingUrl}`;
 
-		const browser = await puppeteer.launch({ headless: false });
+		const browser = await puppeteer.launch({ headless: true });
 		const page = await browser.newPage();
 		await page.goto(url);
 		//? START ACTIONS
@@ -54,6 +54,12 @@ module.exports = {
 			tempObj.name = document.querySelector(
 				'body > div.main > div > div.infobox.deckinfo > div.text > div.name',
 			)?.innerHTML;
+			tempObj.tournament = document.querySelector(
+				'body > div.main > div > div.x-container > table > tbody > tr:nth-child(2) > td:nth-child(2) > a',
+			)?.innerHTML;
+			tempObj.tournamentURL = document.querySelector(
+				'body > div.main > div > div.x-container > table > tbody > tr:nth-child(2) > td:nth-child(2) > a',
+			)?.href;
 			tempObj.date = document.querySelector(
 				'body > div.main > div > div.x-container > table > tbody > tr:nth-child(2) > td:nth-child(3) > a',
 			)?.innerHTML;
@@ -82,10 +88,10 @@ module.exports = {
 			};
 			// tempObj.player = document.querySelector('body > div.main > div > div.infobox > div.heading')?.innerHTML;
 			tempObj.script = document.querySelector('body > div.main > div > div.decklist > script')?.innerHTML;
-			tempObj.list = tempObj.script.split('`')[1];
+			tempObj.list = tempObj.script ? tempObj.script.split('`')[1] : 'No decklist found';
 			return tempObj;
 		});
-		console.log('decklist: ', JSON.stringify(decklist.list));
+		// console.log('decklist: ', JSON.stringify(decklist.list));
 
 		// await page.screenshot({ path: 'example.png' });
 		//? END OF ACTIONS
@@ -93,11 +99,13 @@ module.exports = {
 
 		await interaction.editReply({
 			content: `
+			<:emptyspace:1152273926123180142>
 ${result.name} Deck
-
-\`${result.rank}\` on ${result.date} going \`${result.score}\`
-
-Full decklist: ${url}
+<:emptyspace:1152273926123180142> Tournament: [${result.tournament}](${result.tournamentURL})
+<:emptyspace:1152273926123180142> Rank: \`${result.rank}\`
+<:emptyspace:1152273926123180142> Date: \`${result.date}\`
+<:emptyspace:1152273926123180142> Record: \`${result.score}\`
+<:emptyspace:1152273926123180142> [Full decklist](${url})
 
 ${decklist.list}
 

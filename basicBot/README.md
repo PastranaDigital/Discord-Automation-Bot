@@ -13,8 +13,20 @@ Getting the bot online:
 ## Slash Commands
 
 `/netdeck` - Net Deck an Archetype from play.limitlesstcg
+
 `/log` - Log your match results for Meta Analysis
+
 `/glc` - Gym Leader Challenge Info
+
+<BR>
+
+## To Do
+
+[ ] - Image of decklist
+
+[ ] - Button to copy decklist https://stackoverflow.com/questions/73899550/discord-buttons-on-embed
+
+[ ] - error handling if the `TimeoutError: Navigation timeout of 30000 ms exceeded`
 
 <BR>
 
