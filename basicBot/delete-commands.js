@@ -6,7 +6,7 @@ const { clientId, guildId, token } = require('./config.json');
 
 const rest = new REST().setToken(token);
 
-const commandId = '1221448251798978621';
+const commandId = '1221504408504762549';
 
 // for guild-based commands
 rest.delete(Routes.applicationGuildCommand(clientId, guildId, commandId))
