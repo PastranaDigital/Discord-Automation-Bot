@@ -5,10 +5,10 @@ module.exports = {
 	async execute(interaction) {
 		await interaction.reply({
 			content: `
-Standard Match Reporting Link
+📊 Standard Match Reporting Link
 https://forms.gle/MqmMhuc5TkzZDeGd9 
 
-GLC Match Reporting Link
+💪 GLC Match Reporting Link
 https://forms.gle/3FoMNJCeaisLK8kS8
 			`,
 			ephemeral: true, //? this will make the message only visible to the executor

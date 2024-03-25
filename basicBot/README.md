@@ -10,7 +10,11 @@ Getting the bot online:
 
 <BR>
 
-## Commands
+## Slash Commands
+
+`/netdeck` - Net Deck an Archetype from play.limitlesstcg
+`/log` - Log your match results for Meta Analysis
+`/glc` - Gym Leader Challenge Info
 
 <BR>
 

@@ -6,7 +6,7 @@ const endingUrl = '?format=standard&rotation=2023&set=TEF';
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('netdeck')
-		.setDescription('Net Deck the top play.limitless deck')
+		.setDescription('🕸️ Net Deck an Archetype from play.limitlesstcg')
 		.addStringOption((option) =>
 			option
 				.setName('archetype')
