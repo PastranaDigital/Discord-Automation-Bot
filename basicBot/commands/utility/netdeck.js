@@ -1,4 +1,5 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, messageLink } = require('discord.js');
+const puppeteer = require('puppeteer');
 
 const baseUrl = 'https://play.limitlesstcg.com/decks/';
 const endingUrl = '?format=standard&rotation=2023&set=TEF';
@@ -36,13 +37,48 @@ module.exports = {
 				),
 		),
 	async execute(interaction) {
-		// const url = document.querySelectorAll(".fa-list-alt")[0].parentElement.href;
+		//? since the reply is taking longer than 3 seconds
+		await interaction.deferReply({ ephemeral: true });
+
+		console.log('interaction: ', interaction);
+
 		const archetype = interaction.options.getString('archetype');
 		let url = `${baseUrl}${archetype}${endingUrl}`;
-		await interaction.reply({
+
+		const browser = await puppeteer.launch();
+		const page = await browser.newPage();
+		await page.goto(url);
+		//? START ACTIONS
+		let result = await page.evaluate(() => {
+			let tempObj = {};
+			tempObj.name = document.querySelector(
+				'body > div.main > div > div.infobox.deckinfo > div.text > div.name',
+			).innerHTML;
+			tempObj.date = document.querySelector(
+				'body > div.main > div > div.x-container > table > tbody > tr:nth-child(2) > td:nth-child(3) > a',
+			).innerHTML;
+			tempObj.rank = document.querySelector(
+				'body > div.main > div > div.x-container > table > tbody > tr:nth-child(2) > td:nth-child(4) > a',
+			).innerHTML;
+			tempObj.score = document.querySelector(
+				'body > div.main > div > div.x-container > table > tbody > tr:nth-child(2) > td:nth-child(5) > a',
+			).innerHTML;
+			tempObj.decklistUrl = document.querySelectorAll('.fa-list-alt')[0].parentElement.href;
+
+			return tempObj;
+		});
+		console.log('result: ', JSON.stringify(result));
+		// await page.screenshot({ path: 'example.png' });
+		//? END OF ACTIONS
+		await browser.close();
+
+		await interaction.editReply({
 			content: `
-Play.Limitless
-${url}
+${result.name} Deck
+
+\`${result.rank}\` on ${result.date} going \`${result.score}\`
+
+Full decklist: ${url}
 			`,
 			ephemeral: true, //? this will make the message only visible to the executor
 		});

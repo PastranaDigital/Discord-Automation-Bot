@@ -25,6 +25,7 @@ Getting the bot online:
 -   [Unofficial Discord JS Bot Guide (GitHub)](https://github.com/AnIdiotsGuide/discordjs-bot-guide/blob/master/first-bot/your-first-bot.md)
 -   [Deleting an old command](https://discordjs.guide/slash-commands/deleting-commands.html#deleting-specific-commands)
 -   [Slash Command Documentation](https://discordjs.guide/slash-commands/response-methods.html#ephemeral-responses)
+-   [How to make a scraper discord bot](https://medium.com/@matias42/how-to-make-a-scraper-discord-bot-with-javascript-part-1-b59a5dbb71e8)
 
 YouTube Videos
 
