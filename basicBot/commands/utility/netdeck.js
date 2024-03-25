@@ -11,7 +11,7 @@ module.exports = {
 			option
 				.setName('archetype')
 				.setDescription('Select a Deck Archetype')
-				.setRequired(false)
+				.setRequired(true)
 				.addChoices(
 					{ name: 'Ancient Box', value: 'ancient-box' },
 					{ name: 'Arceus', value: 'arceus-vstar' },
@@ -41,8 +41,7 @@ module.exports = {
 		let url = `${baseUrl}${archetype}${endingUrl}`;
 		await interaction.reply({
 			content: `
-			Play.Limitless
-			:bulletpink: \`netdeck\` info here
+Play.Limitless
 ${url}
 			`,
 			ephemeral: true, //? this will make the message only visible to the executor

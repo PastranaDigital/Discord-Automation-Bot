@@ -1,15 +1,15 @@
 const { SlashCommandBuilder } = require('discord.js');
 
 module.exports = {
-	data: new SlashCommandBuilder().setName('glc').setDescription('Gym Leader Challenge Info'),
+	data: new SlashCommandBuilder().setName('log').setDescription('Log your match results for Meta Analysis'),
 	async execute(interaction) {
 		await interaction.reply({
 			content: `
-Check the Tags Leaderboard
-https://brave-shark-9g6q3j-dev-ed.my.site.com/comebackmechanics/
+Standard Match Reporting Link
+https://forms.gle/MqmMhuc5TkzZDeGd9 
 
-Looking to learn about GLC?
-https://gymleaderchallenge.com/
+GLC Match Reporting Link
+https://forms.gle/3FoMNJCeaisLK8kS8
 			`,
 			ephemeral: true, //? this will make the message only visible to the executor
 		});
