@@ -45,7 +45,7 @@ module.exports = {
 		const archetype = interaction.options.getString('archetype');
 		let url = `${baseUrl}${archetype}${endingUrl}`;
 
-		const browser = await puppeteer.launch();
+		const browser = await puppeteer.launch({ headless: false });
 		const page = await browser.newPage();
 		await page.goto(url);
 		//? START ACTIONS
@@ -53,21 +53,40 @@ module.exports = {
 			let tempObj = {};
 			tempObj.name = document.querySelector(
 				'body > div.main > div > div.infobox.deckinfo > div.text > div.name',
-			).innerHTML;
+			)?.innerHTML;
 			tempObj.date = document.querySelector(
 				'body > div.main > div > div.x-container > table > tbody > tr:nth-child(2) > td:nth-child(3) > a',
-			).innerHTML;
+			)?.innerHTML;
 			tempObj.rank = document.querySelector(
 				'body > div.main > div > div.x-container > table > tbody > tr:nth-child(2) > td:nth-child(4) > a',
-			).innerHTML;
+			)?.innerHTML;
 			tempObj.score = document.querySelector(
 				'body > div.main > div > div.x-container > table > tbody > tr:nth-child(2) > td:nth-child(5) > a',
-			).innerHTML;
-			tempObj.decklistUrl = document.querySelectorAll('.fa-list-alt')[0].parentElement.href;
+			)?.innerHTML;
+			tempObj.decklistUrl = document.querySelectorAll('.fa-list-alt')[0]?.parentElement.href;
 
 			return tempObj;
 		});
 		console.log('result: ', JSON.stringify(result));
+
+		// const decklistButtonSelector =
+		// 	'body > div.main > div > div.x-container > table > tbody > tr:nth-child(2) > td:nth-child(6) > a';
+		// await page.waitForSelector(decklistButtonSelector);
+		// await page.click(decklistButtonSelector);
+
+		const page2 = await browser.newPage();
+		await page2.goto(result.decklistUrl);
+		let decklist = await page2.evaluate(() => {
+			let tempObj = {
+				test: 'something',
+			};
+			// tempObj.player = document.querySelector('body > div.main > div > div.infobox > div.heading')?.innerHTML;
+			tempObj.script = document.querySelector('body > div.main > div > div.decklist > script')?.innerHTML;
+			tempObj.list = tempObj.script.split('`')[1];
+			return tempObj;
+		});
+		console.log('decklist: ', JSON.stringify(decklist.list));
+
 		// await page.screenshot({ path: 'example.png' });
 		//? END OF ACTIONS
 		await browser.close();
@@ -79,6 +98,9 @@ ${result.name} Deck
 \`${result.rank}\` on ${result.date} going \`${result.score}\`
 
 Full decklist: ${url}
+
+${decklist.list}
+
 			`,
 			ephemeral: true, //? this will make the message only visible to the executor
 		});
