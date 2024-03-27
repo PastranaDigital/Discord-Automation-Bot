@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, messageLink } = require('discord.js');
+const { SlashCommandBuilder, messageLink, EmbedBuilder, AttachmentBuilder } = require('discord.js');
 const puppeteer = require('puppeteer');
 
 const baseUrl = 'https://play.limitlesstcg.com/decks/';
@@ -108,6 +108,22 @@ module.exports = {
 		});
 		console.log('decklist: ', JSON.stringify(decklist.list));
 
+		await interaction.editReply({
+			// embeds: [embed],
+			content: `
+\`\`\`
+${decklist.list}
+\`\`\`
+			`,
+			// files: [file],
+			ephemeral: true, //? this will make the message only visible to the executor
+		});
+
+		result.namePathFriendly = result.name.replace(' ', '_');
+		const imagePath = `/deckImages/${result.namePathFriendly}_decklist.png`;
+		const imagePathEmbed = '/Users/omarp/Documents/GitHub/Discord/basicBot' + imagePath;
+		console.log('imagePathEmbed: ', imagePathEmbed);
+
 		//? get decklist image
 		if (decklist.list.length > 20) {
 			console.log('decklist.list.length: ', decklist.list.length);
@@ -151,27 +167,48 @@ module.exports = {
 			// 	page.waitForNavigation(), // The promise resolves after navigation has finished
 			// 	page.click('a.my-link'), // Clicking the link will indirectly cause a navigation
 			//   ]);
-			await imagePage.screenshot({ path: `./deckImages/${result.name}_decklist.png` });
+			await imagePage.screenshot({ path: `./deckImages/${result.namePathFriendly}_decklist.png` });
 		}
 
 		//? END OF ACTIONS
 		await browser.close();
 
-		await interaction.editReply({
-			content: `
-			<:emptyspace:1152273926123180142>
-${result.name}
+		// //? create embed
+		const file = new AttachmentBuilder(`.${imagePath}`);
+		const embed = new EmbedBuilder()
+			.setTitle(result.name)
+			.setDescription(
+				`
 ${result.format}
 ${result.formatScore}
 ---
 Player: ${result.player} at [${result.tournament}](${result.tournamentURL})
 ${result.date} - ${result.rank} - (${result.score})
 [Link to Decklist](${result.decklistUrl})
+				`,
+			)
+			.setImage(`attachment://${result.namePathFriendly}.png`)
+			.setColor('#e12c79');
 
-${decklist.list}
-
-			`,
-			ephemeral: true, //? this will make the message only visible to the executor
+		await interaction.followUp({
+			embeds: [embed],
+			files: [file],
+			ephemeral: true,
 		});
 	},
 };
+
+// content: `
+// 			<:emptyspace:1152273926123180142>
+// ${result.name}
+// ${result.format}
+// ${result.formatScore}
+// ---
+// Player: ${result.player} at [${result.tournament}](${result.tournamentURL})
+// ${result.date} - ${result.rank} - (${result.score})
+// [Link to Decklist](${result.decklistUrl})
+
+// \`\`\`
+// ${decklist.list}
+// \`\`\`
+// 			`
