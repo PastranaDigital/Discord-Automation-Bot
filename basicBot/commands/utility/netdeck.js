@@ -106,7 +106,7 @@ module.exports = {
 			tempObj.list = tempObj.script ? tempObj.script.split('`')[1] : 'No decklist found for Private Tournament';
 			return tempObj;
 		});
-		console.log('decklist: ', JSON.stringify(decklist.list));
+		// console.log('decklist: ', JSON.stringify(decklist.list));
 
 		const embed = new EmbedBuilder()
 			.setTitle(result.name)
@@ -136,11 +136,11 @@ ${decklist.list}
 		result.namePathFriendly = result.name.replaceAll(' ', '_');
 		const imagePath = `/deckImages/${result.namePathFriendly}_decklist.png`;
 		const imagePathEmbed = '/Users/omarp/Documents/GitHub/Discord/basicBot' + imagePath;
-		console.log('imagePathEmbed: ', imagePathEmbed);
+		// console.log('imagePathEmbed: ', imagePathEmbed);
 
 		//? get decklist image
 		if (decklist.list.length > 50) {
-			console.log('decklist.list.length: ', decklist.list.length);
+			// console.log('decklist.list.length: ', decklist.list.length);
 			const imageGeneratorUrl = 'https://ptcg-imggen.netlify.app/'; //https://limitlesstcg.com/tools/imggen;
 			const imagePage = await browser.newPage();
 			await imagePage.goto(imageGeneratorUrl, { waitUntil: 'load', timeout: 0 });
@@ -156,7 +156,7 @@ ${decklist.list}
 					textArea.value = list;
 
 					const submitButton = document.querySelector('#submit');
-					console.log('submitButton: ', JSON.parse(JSON.stringify(submitButton)));
+					// console.log('submitButton: ', JSON.parse(JSON.stringify(submitButton)));
 					submitButton.click();
 
 					return null;
