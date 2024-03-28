@@ -51,9 +51,9 @@ module.exports = {
 		const archetype = interaction.options.getString('archetype');
 		let url = `${baseUrl}${archetype}${endingUrl}`;
 
-		const browser = await puppeteer.launch({ headless: false });
+		const browser = await puppeteer.launch({ headless: true });
 		const page = await browser.newPage();
-		await page.goto(url);
+		await page.goto(url, { waitUntil: 'load', timeout: 0 });
 		//? START ACTIONS
 		let result = await page.evaluate(() => {
 			let tempObj = {};
@@ -96,40 +96,54 @@ module.exports = {
 		// await page.click(decklistButtonSelector);
 
 		const page2 = await browser.newPage();
-		await page2.goto(result.decklistUrl);
+		await page2.goto(result.decklistUrl, { waitUntil: 'load', timeout: 0 });
 		let decklist = await page2.evaluate(() => {
 			let tempObj = {
 				test: 'something',
 			};
 			// tempObj.player = document.querySelector('body > div.main > div > div.infobox > div.heading')?.innerHTML;
 			tempObj.script = document.querySelector('body > div.main > div > div.decklist > script')?.innerHTML;
-			tempObj.list = tempObj.script ? tempObj.script.split('`')[1] : 'No decklist found';
+			tempObj.list = tempObj.script ? tempObj.script.split('`')[1] : 'No decklist found for Private Tournament';
 			return tempObj;
 		});
 		console.log('decklist: ', JSON.stringify(decklist.list));
 
+		const embed = new EmbedBuilder()
+			.setTitle(result.name)
+			.setDescription(
+				`
+${result.format}
+${result.formatScore}
+---
+Player: ${result.player} at [${result.tournament}](${result.tournamentURL})
+${result.date} - ${result.rank} - (${result.score})
+[Link to Decklist](${result.decklistUrl})
+[Link to All Decks](${url})
+				`,
+			)
+			.setColor('#e12c79');
+
 		await interaction.editReply({
-			// embeds: [embed],
 			content: `
 \`\`\`
 ${decklist.list}
 \`\`\`
 			`,
-			// files: [file],
-			ephemeral: true, //? this will make the message only visible to the executor
+			embeds: [embed],
+			ephemeral: true,
 		});
 
-		result.namePathFriendly = result.name.replace(' ', '_');
+		result.namePathFriendly = result.name.replaceAll(' ', '_');
 		const imagePath = `/deckImages/${result.namePathFriendly}_decklist.png`;
 		const imagePathEmbed = '/Users/omarp/Documents/GitHub/Discord/basicBot' + imagePath;
 		console.log('imagePathEmbed: ', imagePathEmbed);
 
 		//? get decklist image
-		if (decklist.list.length > 20) {
+		if (decklist.list.length > 50) {
 			console.log('decklist.list.length: ', decklist.list.length);
 			const imageGeneratorUrl = 'https://ptcg-imggen.netlify.app/'; //https://limitlesstcg.com/tools/imggen;
 			const imagePage = await browser.newPage();
-			await imagePage.goto(imageGeneratorUrl);
+			await imagePage.goto(imageGeneratorUrl, { waitUntil: 'load', timeout: 0 });
 			//? Set screen size
 			await imagePage.setViewport({ width: 1300, height: 800 });
 
@@ -173,28 +187,30 @@ ${decklist.list}
 		//? END OF ACTIONS
 		await browser.close();
 
-		// //? create embed
-		const file = new AttachmentBuilder(`.${imagePath}`);
-		const embed = new EmbedBuilder()
-			.setTitle(result.name)
-			.setDescription(
-				`
-${result.format}
-${result.formatScore}
----
-Player: ${result.player} at [${result.tournament}](${result.tournamentURL})
-${result.date} - ${result.rank} - (${result.score})
-[Link to Decklist](${result.decklistUrl})
-				`,
-			)
-			.setImage(`attachment://${result.namePathFriendly}.png`)
-			.setColor('#e12c79');
+		if (decklist.list.length > 50) {
+			// //? create embed
+			const file = new AttachmentBuilder(`.${imagePath}`);
+			const embedDeckImage = new EmbedBuilder()
+				.setTitle(result.name)
+				// 				.setDescription(
+				// 					`
+				// ${result.format}
+				// ${result.formatScore}
+				// ---
+				// Player: ${result.player} at [${result.tournament}](${result.tournamentURL})
+				// ${result.date} - ${result.rank} - (${result.score})
+				// [Link to Decklist](${result.decklistUrl})
+				// 				`,
+				// 				)
+				.setImage(`attachment://${result.namePathFriendly}.png`)
+				.setColor('#e12c79');
 
-		await interaction.followUp({
-			embeds: [embed],
-			files: [file],
-			ephemeral: true,
-		});
+			await interaction.followUp({
+				embeds: [embedDeckImage],
+				files: [file],
+				ephemeral: true,
+			});
+		}
 	},
 };
 
