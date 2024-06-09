@@ -2,7 +2,7 @@ const { SlashCommandBuilder, messageLink, EmbedBuilder, AttachmentBuilder } = re
 const puppeteer = require('puppeteer');
 
 const baseUrl = 'https://play.limitlesstcg.com/decks/';
-const endingUrl = '?format=standard&rotation=2023&set=TEF';
+const endingUrl = '?format=standard&rotation=2023&set=TWM';
 
 function delay(time) {
 	return new Promise(function (resolve) {
@@ -22,22 +22,24 @@ module.exports = {
 				.addChoices(
 					{ name: 'Ancient Box', value: 'ancient-box' },
 					{ name: 'Arceus', value: 'arceus-vstar' },
-					{ name: 'Arceus Giratina', value: 'arceus-giratina' },
 					{ name: 'Arceus Vulpix', value: 'arceus-vulpix' },
+					{ name: 'Blissey', value: 'blissey-ex' },
 					{ name: 'Charizard', value: 'charizard-ex' },
 					{ name: 'Chien-Pao Baxcalibur', value: 'chien-pao-baxcalibur' },
 					{ name: 'Dialga Metang', value: 'dialga-metang' },
-					{ name: 'Future Box', value: 'future-box' },
-					{ name: 'Future Hands', value: 'iron-hands-ex' },
+					{ name: 'Dragapult', value: 'dragapult-ex' },
+					{ name: 'Dragapult Charizard', value: 'dragapult-charizard' },
+					{ name: 'Dragapult LZ Box', value: 'dragapult-lz-box' },
+					{ name: 'Iron Thorns', value: 'iron-thorns-ex' },
 					{ name: 'Gardevoir', value: 'gardevoir-ex-sv' },
 					{ name: 'Gholdengo', value: 'gholdengo-ex' },
 					{ name: 'Giratina LZ Box', value: 'giratina-lz-box' },
-					{ name: 'Great Tusk Mill', value: 'great-tusk-tef' },
 					{ name: 'Lost Zone Box', value: 'lost-zone-box' },
 					{ name: 'Lugia Archeops', value: 'lugia-archeops' },
+					{ name: 'Miraidon', value: 'miraidon-ex' },
 					{ name: 'Other', value: 'other' },
-					{ name: 'Raging Bolt Sandy Shocks', value: 'ranging-bolt-sandy-shocks' },
-					{ name: 'Roaring Moon', value: 'roaring-moon-ex' },
+					{ name: 'Raging Bolt Ogerpon', value: 'ranging-bolt-ogerpon' },
+					{ name: 'Roaring Moon', value: 'roaring-moon-tef' },
 					{ name: 'Snorlax Pidgeot', value: 'snorlax-pidgeot' },
 					{ name: 'Snorlax Stall', value: 'snorlax-stall' },
 				),
@@ -143,7 +145,7 @@ ${decklist.list}
 			// console.log('decklist.list.length: ', decklist.list.length);
 			const imageGeneratorUrl = 'https://ptcg-imggen.netlify.app/'; //https://limitlesstcg.com/tools/imggen;
 			const imagePage = await browser.newPage();
-			await imagePage.goto(imageGeneratorUrl, { waitUntil: 'load', timeout: 0 });
+			await imagePage.goto(imageGeneratorUrl, { waitUntil: 'load', timeout: 90000 });
 			//? Set screen size
 			await imagePage.setViewport({ width: 1300, height: 800 });
 
