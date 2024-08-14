@@ -6,7 +6,7 @@ update the Decklist Image Generator first
 
 ## Update the ending url
 
--   update `const endingUrl = '?format=standard&rotation=2023&set=TEF'` with new set name
+-   update `const endingUrl = '?format=standard&rotation=2023&set=TEF'` with new set name in the netdeck.js file
 
 <br><br>
 
@@ -15,7 +15,7 @@ update the Decklist Image Generator first
 1. Go to `https://play.limitlesstcg.com/decks`
 2. Copy the Link Address to get the `value` for the new deck name
 3. Add the new choice to the options in alphabetical order
-4. Remove any decks
+4. Remove any decks (max 25)
 
 <br><br>
 
