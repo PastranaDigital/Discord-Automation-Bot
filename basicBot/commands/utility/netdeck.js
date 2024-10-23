@@ -2,7 +2,7 @@ const { SlashCommandBuilder, messageLink, EmbedBuilder, AttachmentBuilder } = re
 const puppeteer = require('puppeteer');
 
 const baseUrl = 'https://play.limitlesstcg.com/decks/';
-const endingUrl = '?format=standard&rotation=2023&set=TWM';
+const endingUrl = '?format=standard&rotation=2023&set=SCR';
 
 function delay(time) {
 	return new Promise(function (resolve) {
@@ -20,31 +20,29 @@ module.exports = {
 				.setDescription('Select a Deck Archetype')
 				.setRequired(true)
 				.addChoices(
-					{ name: 'Ancient Box', value: 'ancient-box' },
-					{ name: 'Arceus', value: 'arceus-vstar' },
-					{ name: 'Blissey', value: 'blissey-ex' },
+					{ name: 'Raging Bolt Ogerpon', value: 'raging-bolt-ogerpon' },
 					{ name: 'Charizard Pidgeot', value: 'charizard-pidgeot' },
-					{ name: 'Chien-Pao Baxcalibur', value: 'chien-pao-baxcalibur' },
-					{ name: 'Dialga Metang', value: 'dialga-metang' },
-					{ name: 'Dragapult', value: 'dragapult-ex' },
-					{ name: 'Dragapult Charizard', value: 'dragapult-charizard' },
-					{ name: 'Dragapult LZ Box', value: 'dragapult-lz-box' },
-					{ name: 'Iron Thorns', value: 'iron-thorns-ex' },
-					{ name: 'Gardevoir', value: 'gardevoir-ex-sv' },
-					{ name: 'Gholdengo', value: 'gholdengo-ex' },
-					{ name: 'Giratina LZ Box', value: 'giratina-lz-box' },
-					{ name: 'Greninja', value: 'greninja-ex' },
-					{ name: 'Iron Thorns', value: 'iron-thorns-ex' },
-					{ name: 'Lost Zone Box', value: 'lost-zone-box' },
-					{ name: 'Lost Box Charizard', value: 'lzb-charizard' },
+					{ name: 'Terapagos Dusknoir', value: 'terapagos-dusknoir' },
+					{ name: 'Dragapult Pidgeot', value: 'dragapult-pidgeot' },
+					{ name: 'Regidrago', value: 'regidrago-vstar' },
+					{ name: 'Palkia Dusknoir', value: 'palkia-dusknoir' },
 					{ name: 'Lugia Archeops', value: 'lugia-archeops' },
-					{ name: 'Miraidon', value: 'miraidon-ex' },
+					{ name: 'Gardevoir', value: 'gardevoir-ex-sv' },
 					{ name: 'Other', value: 'other' },
-					{ name: 'Pidgeot Control', value: 'pidgeot-control' },
-					{ name: 'Raging Bolt Ogerpon', value: 'ranging-bolt-ogerpon' },
-					{ name: 'Regidrago Box', value: 'regidrago-vstar' },
 					{ name: 'Snorlax Stall', value: 'snorlax-stall' },
+					{ name: 'Iron Thorns', value: 'iron-thorns-ex' },
+					{ name: 'Miraidon', value: 'miraidon-ex' },
+					{ name: 'Dragapult Dusknoir', value: 'dragapult-dusknoir' },
+					{ name: 'Pidgeot Control', value: 'pidgeot-control' },
 					{ name: 'Turbo-Roaring Moon', value: 'roaring-moon-ex' },
+					{ name: 'Palkia Noctowl', value: 'palkia-noctowl' },
+					{ name: 'Lost Zone Box', value: 'lost-zone-box' },
+					{ name: 'Gholdengo', value: 'gholdengo-ex' },
+					{ name: 'Ancient Box', value: 'ancient-box' },
+					{ name: 'Klawf Electrode', value: 'klawf-electrode' },
+					{ name: 'Chien-Pao Baxcalibur', value: 'chien-pao-baxcalibur' },
+					{ name: 'Dragapult Ex', value: 'dragapult-ex' },
+					{ name: 'Lost Box Charizard', value: 'lzb-charizard' },
 				),
 		),
 	async execute(interaction) {

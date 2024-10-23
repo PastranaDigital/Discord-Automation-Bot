@@ -22,8 +22,9 @@ update the Decklist Image Generator first
 ## Deploy the command changes
 
 1. Close out any signed in terminals `Ctrl+C`
-2. Run `node deploy-commands.js`
-3. Log bot back in, run `node index.js`
+1. Open Terminal and navigate to `cd basicBot`
+1. Run `node deploy-commands.js`
+1. Log bot back in, run `node index.js`
 
 <br><br>
 
